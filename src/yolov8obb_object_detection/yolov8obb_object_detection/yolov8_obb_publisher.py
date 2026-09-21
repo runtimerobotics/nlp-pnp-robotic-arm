@@ -4,6 +4,7 @@ from ultralytics import YOLO
 import os
 import copy
 import rclpy
+from ament_index_python.packages import get_package_share_directory
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
@@ -18,7 +19,13 @@ class Camera_subscriber(Node):
     def __init__(self):
         super().__init__('camera_subscriber')
 
-        self.model = YOLO(os.environ['HOME'] + '/Isaac_Project/pickPlaceChatMoveitBot_ws/src/yolov8obb_object_detection/yolov8obb_object_detection/best.pt')
+        default_model_path = os.path.join(
+            get_package_share_directory('yolov8obb_object_detection'),
+            'models',
+            'best.pt')
+        model_path = os.environ.get('YOLO_MODEL_PATH', default_model_path)
+        self.get_logger().info(f'Loading YOLO model from: {model_path}')
+        self.model = YOLO(model_path)
 
         self.yolov8_inference = Yolov8Inference()
 
@@ -64,8 +71,14 @@ class Camera_subscriber(Node):
 def main(args=None):
     rclpy.init(args=args)
     camera_subscriber = Camera_subscriber()
-    rclpy.spin(camera_subscriber)
-    rclpy.shutdown()
+    try:
+        rclpy.spin(camera_subscriber)
+    except (KeyboardInterrupt, rclpy.executors.ExternalShutdownException):
+        pass
+    finally:
+        camera_subscriber.destroy_node()
+        if rclpy.ok():
+            rclpy.shutdown()
 
 if __name__ == '__main__':
     main()

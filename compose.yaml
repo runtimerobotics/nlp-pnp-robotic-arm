@@ -1,0 +1,28 @@
+services:
+  robot-dev:
+    build:
+      context: .
+      args:
+        # Set INSTALL_ML_DEPS=1 when building to include the full pinned
+        # PyTorch/Ultralytics requirements file for YOLO inference.
+        INSTALL_ML_DEPS: "${INSTALL_ML_DEPS:-1}"
+    image: sparc-dev:humble
+    gpus: all
+    working_dir: /workspaces/nlp-pnp-robotic-arm
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    network_mode: host
+    ipc: host
+    init: true
+    stdin_open: true
+    tty: true
+    environment:
+      HOME: /tmp/sparc-home
+      ROS_HOME: /tmp/sparc-ros
+      ROS_DOMAIN_ID: "${ROS_DOMAIN_ID:-0}"
+      RMW_IMPLEMENTATION: rmw_fastrtps_cpp
+      ROS_LOCALHOST_ONLY: "${ROS_LOCALHOST_ONLY:-0}"
+      DISPLAY: "${DISPLAY:-}"
+      QT_X11_NO_MITSHM: "1"
+    volumes:
+      - .:/workspaces/nlp-pnp-robotic-arm
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw

@@ -1,0 +1,8 @@
+# Runtime dependencies needed by the YOLOv8 OBB node. Keep this separate from
+# the repository-root requirements.txt, which is a workstation-wide export and
+# includes unrelated UI, notebook, and training packages.
+numpy<2
+torch==2.7.1
+torchvision==0.22.1
+torchaudio==2.7.1
+ultralytics==8.3.178

@@ -18,6 +18,8 @@ setup(
         (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
         # RViz config files (if any)
         (os.path.join('share', package_name, 'config'), glob('config/*.rviz')),
+        # YOLO checkpoint used by the inference node
+        (os.path.join('share', package_name, 'models'), glob(os.path.join(package_name, '*.pt'))),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

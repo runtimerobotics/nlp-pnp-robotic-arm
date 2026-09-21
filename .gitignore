@@ -1,6 +1,9 @@
 build/
 install/
 log/
+.docker-home/
+core
+core.*
 
 .vscode/
 __pycache__/

@@ -1,0 +1,15 @@
+.git
+.github
+.vscode
+.thumbs
+build
+install
+log
+__pycache__
+*.py[cod]
+assets
+SPARC.usd
+docs
+recording_scripts
+src
+pick_place_chatbot_ui
