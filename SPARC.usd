@@ -414,8 +414,9 @@ def Xform "World"
         }
 
         def "plastic_pallet" (
+            active = false
             delete payload = @../../Downloads/isaac_assets/plastic_pallet/plastic_pallet.usd@
-            prepend payload = @../../Downloads/revel_assets/plastic_pallet/plastic_pallet.usd@
+            delete payload = @../../Downloads/revel_assets/plastic_pallet/plastic_pallet.usd@
         )
         {
             quatf xformOp:orient = (0.70710677, 0, 0, -0.70710677)
@@ -800,8 +801,9 @@ def Xform "World"
         }
 
         def "plastic_pallet_01" (
+            active = false
             delete payload = @../../Downloads/isaac_assets/plastic_pallet/plastic_pallet.usd@
-            prepend payload = @../../Downloads/revel_assets/plastic_pallet/plastic_pallet.usd@
+            delete payload = @../../Downloads/revel_assets/plastic_pallet/plastic_pallet.usd@
         )
         {
             quatf xformOp:orient = (0.70710677, 0, 0, -0.70710677)
@@ -1178,6 +1180,57 @@ def Xform "World"
                     over "Principled_BSDF"
                     {
                         color3f inputs:diffuseColor = (0.04633206, 0.0441854, 0.0441854)
+                    }
+                }
+            }
+        }
+
+        # NVIDIA Isaac SimReady H20 containers replace the unavailable local
+        # plastic_pallet payloads. Their positions preserve the original left
+        # and right drop-area locations on the packing table.
+        def Xform "drop_box_1" (
+            prepend references = @https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/PackingTable/props/container_h20/container_h20.usd@</RootNode>
+        )
+        {
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0.390349198121676, -0.7047225947280535, 0.9925656570552239)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "container_h20_inst"
+            {
+                over "Looks"
+                {
+                    over "opaque__plastic__container"
+                    {
+                        over "Shader"
+                        {
+                            color3f inputs:diffuse_color_constant = (0.06439595, 0.98999995, 1.05)
+                        }
+                    }
+                }
+            }
+        }
+
+        def Xform "drop_box_2" (
+            prepend references = @https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/PackingTable/props/container_h20/container_h20.usd@</RootNode>
+        )
+        {
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            double3 xformOp:translate = (0.4038949760731616, 0.6938798260324615, 0.9925656570552239)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "container_h20_inst"
+            {
+                over "Looks"
+                {
+                    over "opaque__plastic__container"
+                    {
+                        over "Shader"
+                        {
+                            color3f inputs:diffuse_color_constant = (0.06439595, 0.98999995, 1.05)
+                        }
                     }
                 }
             }
@@ -2749,4 +2802,3 @@ def "Graph"
         }
     }
 }
-
