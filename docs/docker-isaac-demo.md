@@ -11,18 +11,30 @@ Isaac Sim is the sole simulator and state source. MoveIt is the sole arm
 motion owner. Do not run `main_launch.sh` alongside this guide because it
 starts duplicate processes outside the Docker workflow.
 
+## Get the repository
+
+Clone the project into the current user's home directory:
+
+```bash
+cd "$HOME"
+git clone https://github.com/runtimerobotics/nlp-pnp-robotic-arm.git
+cd "$HOME/nlp-pnp-robotic-arm"
+```
+
+If the repository is already cloned, skip this section.
+
 ## Prerequisites
 
 - Docker Engine with Docker Compose and NVIDIA Container Toolkit.
 - An X11 desktop session for RViz and Isaac Sim.
 - Isaac Sim 6.0.1 installed at
-  `/home/robot/Downloads/isaac-sim-standalone-6.0.1-linux-x86_64`.
+  `$HOME/Downloads/isaac-sim-standalone-6.0.1-linux-x86_64`.
 
 Run the following once from a host terminal. It allows the current user to
 open RViz from the Docker container:
 
 ```bash
-cd /home/robot/nlp-pnp-robotic-arm
+cd "$HOME/nlp-pnp-robotic-arm"
 
 export LOCAL_UID=$(id -u)
 export LOCAL_GID=$(id -g)
@@ -38,7 +50,7 @@ joint states. Do not add a `--gpus` argument to `docker compose run`; the
 Compose service already requests the GPU.
 
 ```bash
-cd /home/robot/nlp-pnp-robotic-arm
+cd "$HOME/nlp-pnp-robotic-arm"
 
 docker compose build
 docker compose run --rm robot-dev bash docker/scripts/build-workspace.sh
@@ -46,24 +58,24 @@ docker compose run --rm robot-dev bash docker/scripts/build-workspace.sh
 
 ## 2. Start Isaac Sim
 
-In a new terminal, start Isaac with the Humble ROS 2 bridge on ROS domain 0:
+In a new terminal, start Isaac with the Humble ROS 2 bridge on ROS domain 0.
+The Isaac Sim path below is an example; replace it with the actual installation
+path on your machine if yours is different.
 
 ```bash
-cd /home/robot/nlp-pnp-robotic-arm
-
-SIM_ROOT=/home/robot/Downloads/isaac-sim-standalone-6.0.1-linux-x86_64
+cd "$HOME/nlp-pnp-robotic-arm"
 
 env -u AMENT_PREFIX_PATH -u CMAKE_PREFIX_PATH -u COLCON_PREFIX_PATH \
   ROS_DOMAIN_ID=0 \
   RMW_IMPLEMENTATION=rmw_fastrtps_cpp \
-  "$SIM_ROOT/isaac-sim.sh" \
+  "$HOME/Downloads/isaac-sim-standalone-6.0.1-linux-x86_64/isaac-sim.sh" \
   --/isaac/startup/ros_bridge_extension=isaacsim.ros2.bridge \
   --/exts/isaacsim.ros2.bridge/ros_distro=humble
 ```
 
 In Isaac Sim:
 
-1. Open `/home/robot/nlp-pnp-robotic-arm/SPARC.usd`.
+1. Open `$HOME/nlp-pnp-robotic-arm/SPARC.usd`.
 2. Confirm that the ROS 2 Bridge extension is enabled.
 3. Press **Play** and leave the simulation running.
 
@@ -75,7 +87,7 @@ subscribes to `/isaac_joint_commands`.
 In another terminal:
 
 ```bash
-cd /home/robot/nlp-pnp-robotic-arm
+cd "$HOME/nlp-pnp-robotic-arm"
 
 docker compose run --rm robot-dev bash -lc '
   source /opt/ros/humble/setup.bash
@@ -94,7 +106,7 @@ In a fourth terminal, confirm that Isaac is sending the inputs before planning
 or executing motion:
 
 ```bash
-cd /home/robot/nlp-pnp-robotic-arm
+cd "$HOME/nlp-pnp-robotic-arm"
 
 docker compose run --rm robot-dev bash -lc '
   source /opt/ros/humble/setup.bash
@@ -139,7 +151,7 @@ scene and calibration expect the existing base transform.
 In a new terminal:
 
 ```bash
-cd /home/robot/nlp-pnp-robotic-arm
+cd "$HOME/nlp-pnp-robotic-arm"
 
 docker compose run --rm robot-dev bash docker/scripts/run-chatbot.sh
 ```
@@ -154,7 +166,7 @@ This one command starts:
 Verify that a scene object is detected before asking for a pick:
 
 ```bash
-cd /home/robot/nlp-pnp-robotic-arm
+cd "$HOME/nlp-pnp-robotic-arm"
 
 docker compose run --rm robot-dev bash -lc '
   source /opt/ros/humble/setup.bash
@@ -169,7 +181,7 @@ Only after the checks above pass, start the node that consumes `/target_point`
 and executes the pick/place trajectory:
 
 ```bash
-cd /home/robot/nlp-pnp-robotic-arm
+cd "$HOME/nlp-pnp-robotic-arm"
 
 docker compose run --rm robot-dev bash -lc '
   source /opt/ros/humble/setup.bash
