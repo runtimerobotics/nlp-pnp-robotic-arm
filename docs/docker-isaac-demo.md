@@ -17,7 +17,9 @@ Clone the project into the current user's home directory:
 
 ```bash
 cd "$HOME"
-git clone https://github.com/runtimerobotics/nlp-pnp-robotic-arm.git
+
+git clone --branch docker --single-branch https://github.com/runtimerobotics/nlp-pnp-robotic-arm.git
+
 cd "$HOME/nlp-pnp-robotic-arm"
 ```
 
